@@ -1,14 +1,46 @@
-import React from "react";
-import { Album } from "lucide-react";
-import { motion } from "framer-motion"; // Ensure framer-motion is installed
+
+// AlbumsPage.js
+import React, { useEffect } from 'react';
+import { motion } from 'framer-motion';
+import TrackListItem from '../TrackListItem';
+import { usePlayer } from '../PlayerContext';
 
 const AlbumsPage = () => {
+  const { playTrack, addTracks } = usePlayer();
+
   const albums = [
-    { title: "Renaissance", artist: "Beyoncé", year: "2022", tracks: 16, image: "./image.png" },
-    { title: "Midnights", artist: "Taylor Swift", year: "2022", tracks: 13, image: "./image.png" },
-    { title: "Harry's House", artist: "Harry Styles", year: "2022", tracks: 13, image: "./image.png" },
-    { title: "30", artist: "Adele", year: "2021", tracks: 12, image: "./image.png" },
+    {
+      title: 'Renaissance',
+      artist: 'Beyoncé',
+      year: '2022',
+      tracks: [
+        { 
+          id: 'renaissance-1', 
+          title: 'Track 1', 
+          artist: 'Beyoncé', 
+          path: '/audio/Alarm.mp3',
+          image: './image.png',
+          duration: 180
+        },
+        { 
+          id: 'renaissance-2', 
+          title: 'Track 2', 
+          artist: 'Beyoncé', 
+          path: '/audio/Alarm.mp3',
+          image: './image.png',
+          duration: 180
+        },
+      ],
+      image: './image.png',
+    },
+    // ... other albums
   ];
+
+  // Add all tracks to the player context when the page loads
+  useEffect(() => {
+    const allTracks = albums.flatMap(album => album.tracks);
+    addTracks(allTracks);
+  }, [addTracks]);
 
   return (
     <div className="flex flex-col min-h-screen p-6 bg-black text-white">
@@ -19,7 +51,7 @@ const AlbumsPage = () => {
         transition={{ duration: 0.6 }}
       >
         <h1 className="text-3xl font-bold text-white">Albums</h1>
-        <p className="text-lg text-gray-400">A collection of your favorite Albums</p>
+        <p className="text-lg text-gray-400">A collection of your favorite albums</p>
       </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -32,10 +64,20 @@ const AlbumsPage = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: index * 0.1 }}
           >
-            <img src={album.image} alt={album.title} className="w-max rounded-lg mb-4" />
-            <h3 className="font-semibold text-lg">{album.title}</h3>
+            <img src={album.image} alt={album.title} className="w-full rounded-lg mb-4" />
+            <h3 className="font-semibold text-lg text-white">{album.title}</h3>
             <p className="text-gray-400">{album.artist}</p>
-            <p className="text-sm text-gray-500">{album.year} • {album.tracks} tracks</p>
+            <p className="text-sm text-gray-500">{album.year} • {album.tracks.length} tracks</p>
+            
+            <div className="mt-4 space-y-2">
+              {album.tracks.map((track) => (
+                <TrackListItem 
+                  key={track.id} 
+                  track={track} 
+                  onPlay={() => playTrack(track)} 
+                />
+              ))}
+            </div>
           </motion.div>
         ))}
       </div>

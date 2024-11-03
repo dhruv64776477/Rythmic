@@ -32,3 +32,22 @@
  .lyrics-btn {
    color: #1D4ED8;
  }
+
+ .scrolling-text-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+.scrolling-text {
+  animation: scroll-text 20s linear infinite;
+  white-space: nowrap;
+}
+
+@keyframes scroll-text {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}

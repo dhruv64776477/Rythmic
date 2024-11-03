@@ -1,52 +1,124 @@
 import React, { useEffect, useState } from 'react';
-import { Play, SkipBack, SkipForward, Repeat } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Repeat, X } from 'lucide-react';
 import Draggable from 'react-draggable';
+import { usePlayer } from './PlayerContext';
 import '../CSS/Player.css';
 
-const Player = ({ track }) => {
+const formatTime = (seconds) => {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60);
+  return `${mins}:${secs.toString().padStart(2, '0')}`;
+};
+
+const ScrollingText = ({ text }) => {
+  return (
+    <div className="scrolling-text-container">
+      <div className="scrolling-text">
+        {text}
+      </div>
+    </div>
+  );
+};
+
+
+const Player = () => {
+  const {
+    isVisible,
+    isPlaying,
+    currentTrack,
+    progress,
+    duration,
+    togglePlayPause,
+    closePlayer,
+    updateProgress,
+    playPreviousTrack,
+    playNextTrack
+  } = usePlayer();
+
   const [isLongTitle, setIsLongTitle] = useState(false);
-  
+
   useEffect(() => {
-    // Check if the track title is longer than a certain number of characters
-    const titleLength = track.title.length;
-    setIsLongTitle(titleLength > 20); // You can adjust the character limit as needed
-  }, [track.title]);
+    const titleLength = currentTrack?.title?.length || 0;
+    setIsLongTitle(titleLength > 20);
+  }, [currentTrack?.title]);
+
+  if (!isVisible || !currentTrack) return null;
+
+  const handleRangeChange = (e) => {
+    const newProgress = Number(e.target.value);
+    updateProgress(newProgress);
+  };
 
   return (
     <Draggable bounds="parent">
-      {/* Main container with fixed dimensions and styling */}
-      <div className="player fixed bottom-4 right-4 w-72 h-52 bg-gray-900 text-white rounded-lg shadow-lg p-4">
-        <div className="player-container flex flex-col h-full justify-between">
-          {/* Track Info */}
+      <div className="player fixed bottom-4 right-4 w-72 bg-gray-900 text-white rounded-lg shadow-lg p-4">
+        <div className="player-container flex flex-col space-y-4">
+          <button
+            onClick={closePlayer}
+            className="absolute top-2 right-2 hover:text-gray-400"
+            aria-label="Close player"
+          >
+            <X size={16} />
+          </button>
+
           <div className="player-track-info flex items-center space-x-4">
-            <img src={track.image} alt="Now playing" className="player-img w-16 h-16 rounded-md" />
+            <img 
+              src={currentTrack.image} 
+              alt={`${currentTrack.title} album art`}
+              className="player-img w-16 h-16 rounded-md"
+            />
             <div className="overflow-hidden w-40">
-              <p className="player-title whitespace-nowrap text-lg font-semibold">
+              <div className="player-title text-lg font-semibold">
                 {isLongTitle ? (
-                  <marquee behavior="scroll" direction="left" scrollamount="3" className="overflow-hidden">
-                    {track.title}
-                  </marquee>
+                  <ScrollingText text={currentTrack.title} />
                 ) : (
-                  <span>{track.title}</span>
+                  <span>{currentTrack.title}</span>
                 )}
+              </div>
+              <p className="player-artist text-sm text-gray-400">
+                {currentTrack.artist}
               </p>
-              <p className="player-artist text-sm text-gray-400">{track.artist}</p>
             </div>
           </div>
 
-          {/* Player Controls */}
-          <div className="player-controls flex items-center justify-around mt-4">
-            <SkipBack className="player-skip cursor-pointer hover:text-blue-500" />
-            <button className="play-btn bg-blue-500 p-2 rounded-full text-white hover:bg-blue-600">
-              <Play />
-            </button>
-            <SkipForward className="player-skip cursor-pointer hover:text-blue-500" />
+          <div className="space-y-2">
+            <input
+              type="range"
+              min="0"
+              max={duration || currentTrack.duration}
+              value={progress}
+              onChange={handleRangeChange}
+              className="w-full h-1 bg-gray-600 rounded-lg appearance-none cursor-pointer"
+              aria-label="Track progress"
+            />
+            <div className="flex justify-between text-xs text-gray-400">
+              <span>{formatTime(progress)}</span>
+              <span>{formatTime(duration || currentTrack.duration)}</span>
+            </div>
           </div>
 
-          {/* Additional Actions */}
-          <div className="player-actions flex justify-between items-center mt-4">
-            <Repeat className="player-repeat cursor-pointer hover:text-blue-500" />
-            <button className="lyrics-btn text-sm text-blue-400 hover:text-blue-500">LYRICS</button>
+          <div className="player-controls flex items-center justify-around">
+            <button 
+              onClick={playPreviousTrack}
+              className="cursor-pointer hover:text-blue-500"
+              aria-label="Previous track"
+            >
+              <SkipBack size={20} />
+            </button>
+            <button 
+              onClick={togglePlayPause}
+              className="p-2 bg-blue-500 rounded-full hover:bg-blue-600"
+              aria-label={isPlaying ? 'Pause' : 'Play'}
+            >
+              {isPlaying ? <Pause size={20} /> : <Play size={20} />}
+            </button>
+            <button 
+              onClick={playNextTrack}
+              className="cursor-pointer hover:text-blue-500"
+              aria-label="Next track"
+            >
+              <SkipForward size={20} />
+            </button>
           </div>
         </div>
       </div>
