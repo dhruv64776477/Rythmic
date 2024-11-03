@@ -1,5 +1,5 @@
 import React from "react";
-import '../CSS/Sidebar.css';
+import '../../CSS/Sidebar.css';
 import { Music, Radio, Heart, Clock, Plus, Library, Home, Mic2 } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 

@@ -1,5 +1,4 @@
 import React from 'react';
-import { Mic2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const ArtistsPage = () => {

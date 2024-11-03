@@ -1,6 +1,5 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
-import Player from './Player'; // Import the Player component
 import { motion } from 'framer-motion';
 import '../CSS/Explore.css';
 

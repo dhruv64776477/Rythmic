@@ -2,8 +2,8 @@
 // AlbumsPage.js
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import TrackListItem from '../TrackListItem';
-import { usePlayer } from '../PlayerContext';
+import TrackListItem from '../Context/TrackListItem';
+import { usePlayer } from '../Context/PlayerContext';
 
 const AlbumsPage = () => {
   const { playTrack, addTracks } = usePlayer();
@@ -18,7 +18,7 @@ const AlbumsPage = () => {
           id: 'renaissance-1', 
           title: 'Track 1', 
           artist: 'Beyoncé', 
-          path: '/audio/Alarm.mp3',
+          path: '/audio/1.mp3',
           image: './image.png',
           duration: 180
         },
@@ -26,7 +26,7 @@ const AlbumsPage = () => {
           id: 'renaissance-2', 
           title: 'Track 2', 
           artist: 'Beyoncé', 
-          path: '/audio/Alarm.mp3',
+          path: '/audio/2.mp3',
           image: './image.png',
           duration: 180
         },

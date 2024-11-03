@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Explore from "./App/Explore";
-import Sidebar from "./App/Sidebar";
-import Header from "./App/Header";
+import Sidebar from "./App/Component/Sidebar";
+import Header from "./App/Component/Header";
 import AlbumsPage from "./App/Pages/AlbumsPage";
 import ArtistsPage from "./App/Pages/ArtistsPage";
 import RadioPage from "./App/Pages/RadioPage";
@@ -10,8 +10,8 @@ import FavoritesPage from "./App/Pages/FavoritesPage";
 import LocalPage from "./App/Pages/LocalPage";
 import CreateNewPage from "./App/Pages/CreateNewPage";
 import GenresPage from "./App/Pages/GenresPage";
-import Player from "./App/Player"; // Import Player
-import { PlayerProvider } from "./App/PlayerContext";
+import Player from "./App/Component/Player"; // Import Player
+import { PlayerProvider } from "./App/Context/PlayerContext";
 function App() {
   const currentTrack = {
     title: 'Jesus Is King',
