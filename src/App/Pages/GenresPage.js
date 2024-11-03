@@ -1,68 +1,42 @@
 import React, { useState } from 'react';
-import { Play, ChevronRight } from 'lucide-react';
+import { Play } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const GenrePage = () => {
   const [selectedGenre, setSelectedGenre] = useState(null);
 
   const genres = [
-    {
-      name: "Hip Hop",
-      color: "from-orange-400 to-red-500",
-      description: "Beats, rhymes and urban vibes",
-      monthlyListeners: "120M",
-      popularTags: ["Rap", "Trap", "Urban"]
-    },
-    {
-      name: "Pop",
-      color: "from-pink-400 to-purple-500",
-      description: "Chart-topping hits and catchy melodies",
-      monthlyListeners: "150M",
-      popularTags: ["Mainstream", "Dance", "Chart Hits"]
-    },
-    {
-      name: "Rock",
-      color: "from-blue-400 to-indigo-500",
-      description: "Guitar-driven anthems and powerful vocals",
-      monthlyListeners: "90M",
-      popularTags: ["Alternative", "Classic Rock", "Metal"]
-    },
-    {
-      name: "Electronic",
-      color: "from-green-400 to-teal-500",
-      description: "Synthesized sounds and digital beats",
-      monthlyListeners: "80M",
-      popularTags: ["EDM", "House", "Techno"]
-    },
-    {
-      name: "R&B",
-      color: "from-purple-400 to-pink-500",
-      description: "Smooth grooves and soulful vocals",
-      monthlyListeners: "70M",
-      popularTags: ["Soul", "Contemporary", "Blues"]
-    },
-    {
-      name: "Jazz",
-      color: "from-yellow-400 to-orange-500",
-      description: "Improvisational and sophisticated",
-      monthlyListeners: "40M",
-      popularTags: ["Bebop", "Swing", "Contemporary"]
-    }
+    { name: "Hip Hop", color: "from-orange-400 to-red-500", description: "Beats, rhymes and urban vibes", monthlyListeners: "120M", popularTags: ["Rap", "Trap", "Urban"] },
+    { name: "Pop", color: "from-pink-400 to-purple-500", description: "Chart-topping hits and catchy melodies", monthlyListeners: "150M", popularTags: ["Mainstream", "Dance", "Chart Hits"] },
+    { name: "Rock", color: "from-blue-400 to-indigo-500", description: "Guitar-driven anthems and powerful vocals", monthlyListeners: "90M", popularTags: ["Alternative", "Classic Rock", "Metal"] },
+    { name: "Electronic", color: "from-green-400 to-teal-500", description: "Synthesized sounds and digital beats", monthlyListeners: "80M", popularTags: ["EDM", "House", "Techno"] },
+    { name: "R&B", color: "from-purple-400 to-pink-500", description: "Smooth grooves and soulful vocals", monthlyListeners: "70M", popularTags: ["Soul", "Contemporary", "Blues"] },
+    { name: "Jazz", color: "from-yellow-400 to-orange-500", description: "Improvisational and sophisticated", monthlyListeners: "40M", popularTags: ["Bebop", "Swing", "Contemporary"] }
   ];
 
   return (
     <div className="flex flex-col min-h-screen p-6 bg-black text-white">
-      <div className="bg-gradient-to-r from-gray-900 to-transparent p-8 mb-4 rounded-lg">
+      <motion.div
+        className="bg-gradient-to-r from-gray-900 to-transparent p-8 mb-4 rounded-lg"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
         <h1 className="text-3xl font-bold mb-2">Explore Genres</h1>
         <p className="text-gray-400">Discover music across different styles and moods</p>
-      </div>
+      </motion.div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {genres.map((genre, index) => (
-          <div
+          <motion.div
             key={index}
             className={`rounded-xl overflow-hidden cursor-pointer transition-all duration-300 
               hover:shadow-xl ${selectedGenre === genre.name ? 'ring-2 ring-blue-500' : ''}`}
             onClick={() => setSelectedGenre(genre.name)}
+            whileHover={{ scale: 1.05 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
           >
             <div className="relative h-64 bg-gray-800 rounded-xl">
               <div className={`absolute inset-0 bg-gradient-to-br ${genre.color} opacity-90`}></div>
@@ -82,21 +56,23 @@ const GenrePage = () => {
                   <span className="text-sm text-white/80">
                     {genre.monthlyListeners} monthly listeners
                   </span>
-                  <button
-                    className="bg-white text-black rounded-full px-4 py-2 flex items-center gap-2 
-                      hover:bg-white/90 transition-colors"
-                  >
+                  <button className="bg-white text-black rounded-full px-4 py-2 flex items-center gap-2 hover:bg-white/90 transition-colors">
                     <Play size={16} /> Mix
                   </button>
                 </div>
               </div>
             </div>
-          </div>
+          </motion.div>
         ))}
       </div>
 
       {selectedGenre && (
-        <div className="mt-12 p-6 bg-gray-900 rounded-xl">
+        <motion.div
+          className="mt-12 p-6 bg-gray-900 rounded-xl"
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <h2 className="text-2xl font-bold mb-4">Featured in {selectedGenre}</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-gray-800 p-6 rounded-lg shadow-sm">
@@ -108,7 +84,7 @@ const GenrePage = () => {
               <p className="text-gray-400">Latest {selectedGenre} tracks and albums</p>
             </div>
           </div>
-        </div>
+        </motion.div>
       )}
     </div>
   );
