@@ -15,7 +15,7 @@ const AlbumsPage = () => {
       year: '2022',
       tracks: [
         { 
-          id: 'renaissance-1', 
+          id: '1', 
           title: 'Track 1', 
           artist: 'Beyoncé', 
           path: '/audio/1.mp3',
@@ -23,10 +23,58 @@ const AlbumsPage = () => {
           duration: 180
         },
         { 
-          id: 'renaissance-2', 
+          id: '2', 
           title: 'Track 2', 
           artist: 'Beyoncé', 
           path: '/audio/2.mp3',
+          image: './image.png',
+          duration: 180
+        },
+      ],
+      image: './image.png',
+    },
+    {
+      title: 'Renaissance',
+      artist: 'Beyoncé',
+      year: '2022',
+      tracks: [
+        { 
+          id: '3', 
+          title: 'Track 3', 
+          artist: 'Beyoncé', 
+          path: '/audio/3.mp3',
+          image: './image.png',
+          duration: 180
+        },
+        { 
+          id: '4', 
+          title: 'Track 4', 
+          artist: 'Beyoncé', 
+          path: '/audio/4.mp3',
+          image: './image.png',
+          duration: 180
+        },
+      ],
+      image: './image.png',
+    },
+    {
+      title: 'Renaissance',
+      artist: 'Beyoncé',
+      year: '2022',
+      tracks: [
+        { 
+          id: '5', 
+          title: 'Track 5', 
+          artist: 'Beyoncé', 
+          path: '/audio/5.mp3',
+          image: './image.png',
+          duration: 180
+        },
+        { 
+          id: '6', 
+          title: 'Track 6', 
+          artist: 'Beyoncé', 
+          path: '/audio/6.mp3',
           image: './image.png',
           duration: 180
         },

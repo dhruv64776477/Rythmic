@@ -1,9 +1,13 @@
 import React from 'react';
 import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+import { usePlayer } from './Context/PlayerContext';
 import '../CSS/Explore.css';
 
 const Explore = () => {
+  const { playTrack } = usePlayer();
+
   const topArtists = [
     { name: "Arijit Singh", plays: "100M Plays", image: "./image.png" },
     { name: "Neha Kakkar", plays: "90M Plays", image: "./image.png" },
@@ -23,13 +27,11 @@ const Explore = () => {
   ];
 
   const topCharts = [
-    { position: '01', title: 'Jesus Is King', artist: 'Kanye West', duration: '3:45', image: "./image.png" },
-    { position: '02', title: 'Lean On', artist: 'Major Lazer ft Dj Snake', duration: '3:45', image: "./image.png" },
-    { position: '03', title: 'Havana', artist: 'Camila Cabello', duration: '3:45', image: "./image.png" },
-    { position: '04', title: 'Closer', artist: 'The Chainsmoker', duration: '3:45', image: "./image.png" }
+    { id: '1', position: '01', title: 'Jesus Is King', artist: 'Kanye West', duration: '3:45', image: "./image.png", path: '/audio/13.mp3' },
+    { id: '2', position: '02', title: 'Lean On', artist: 'Major Lazer ft DJ Snake', duration: '3:45', image: "./image.png", path: '/audio/14.mp3' },
+    { id: '3', position: '03', title: 'Havana', artist: 'Camila Cabello', duration: '3:45', image: "./image.png", path: '/audio/15.mp3' },
+    { id: '4', position: '04', title: 'Closer', artist: 'The Chainsmokers', duration: '3:45', image: "./image.png", path: '/audio/1.mp3' }
   ];
-
-  const currentTrack = topCharts[0];
 
   return (
     <div className="explore-container">
@@ -52,7 +54,7 @@ const Explore = () => {
           </div>
         </motion.div>
 
-        {/* Top Artists */}
+        {/* Top Artists Section */}
         <motion.div
           className="top-artists-container"
           initial={{ opacity: 0, x: -20 }}
@@ -61,7 +63,7 @@ const Explore = () => {
         >
           <div className="section-header flex justify-between">
             <h1 className="section-title">Top Artists</h1>
-            <a href='/artists' className="see-all-btn">See all</a>
+            <Link to='/artists' className="see-all-btn">See all</Link>
           </div>
           <div className="top-artists-grid">
             {topArtists.map((artist, index) => (
@@ -79,9 +81,9 @@ const Explore = () => {
           </div>
         </motion.div>
 
-        {/* Genres and Charts */}
+        {/* Genres and Charts Grid */}
         <div className="genres-charts-grid">
-          {/* Genres */}
+          {/* Genres Section */}
           <motion.div
             className="genres-section"
             initial={{ opacity: 0, x: -20 }}
@@ -90,7 +92,7 @@ const Explore = () => {
           >
             <div className="section-header flex justify-between">
               <h1 className="section-title">Genres</h1>
-              <a href='/genres' className="see-all-btn">See all</a>
+              <Link to='/genres' className="see-all-btn">See all</Link>
             </div>
             <div className="genres-grid">
               {genres.map((genre, index) => (
@@ -106,7 +108,7 @@ const Explore = () => {
             </div>
           </motion.div>
 
-          {/* Top Charts */}
+          {/* Top Charts Section */}
           <motion.div
             className="top-charts-section"
             initial={{ opacity: 0, y: 20 }}
@@ -115,15 +117,16 @@ const Explore = () => {
           >
             <div className="section-header flex justify-between">
               <h1 className="section-title">Top Charts</h1>
-              <a href='/artists' className="see-all-btn">See all</a>
+              <Link to='/charts' className="see-all-btn">See all</Link>
             </div>
             <div className="top-charts-grid">
-              {topCharts.map((track, index) => (
+              {topCharts.map((track) => (
                 <motion.div
-                  key={index}
+                  key={track.id}
                   className="top-chart-track"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
+                  onClick={() => playTrack(track)}
                 >
                   <div className="chart-info">
                     <span className="chart-position">{track.position}</span>

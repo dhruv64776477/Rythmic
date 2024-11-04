@@ -1,12 +1,40 @@
+// FavoritesPage.js
 import React from 'react';
 import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { usePlayer } from '../Context/PlayerContext';
 
 const FavoritesPage = () => {
+  const { playTrack } = usePlayer();
+
   const favorites = [
-    { title: "Shape of You", artist: "Ed Sheeran", addedDate: "2 months ago", image: "./image.png" },
-    { title: "Stay With Me", artist: "Sam Smith", addedDate: "3 months ago", image: "./image.png" },
-    { title: "Bad Guy", artist: "Billie Eilish", addedDate: "4 months ago", image: "./image.png" }
+    { 
+      id: '7',
+      title: "Shape of You", 
+      artist: "Ed Sheeran", 
+      addedDate: "2 months ago", 
+      image: "./image.png", 
+      path: '/audio/7.mp3',
+      duration: 200
+    },
+    { 
+      id: '8',
+      title: "Stay With Me", 
+      artist: "Sam Smith", 
+      addedDate: "3 months ago", 
+      image: "./image.png",
+      path: '/audio/8.mp3',
+      duration: 210 
+    },
+    { 
+      id: '9',
+      title: "Bad Guy", 
+      artist: "Billie Eilish", 
+      addedDate: "4 months ago", 
+      image: "./image.png",
+      path: '/audio/9.mp3',
+      duration: 190 
+    }
   ];
 
   return (
@@ -24,11 +52,12 @@ const FavoritesPage = () => {
       <div className="space-y-4">
         {favorites.map((track, index) => (
           <motion.div
-            key={index}
-            className="flex items-center gap-4 p-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
+            key={track.id}
+            className="flex items-center gap-4 p-4 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1, duration: 0.5 }}
+            onClick={() => playTrack(track)}
           >
             <img src={track.image} alt={track.title} className="w-12 h-12 rounded" />
             <div className="flex-1">

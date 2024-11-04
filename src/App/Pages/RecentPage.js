@@ -1,12 +1,36 @@
 import React from 'react';
 import { Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { usePlayer } from '../Context/PlayerContext';
 
 const RecentPage = () => {
+  const { playTrack } = usePlayer();
+
   const recentlyPlayed = [
-    { title: "Blinding Lights", artist: "The Weeknd", lastPlayed: "2 hours ago", image: "./image.png" },
-    { title: "As It Was", artist: "Harry Styles", lastPlayed: "5 hours ago", image: "./image.png" },
-    { title: "Anti-Hero", artist: "Taylor Swift", lastPlayed: "Yesterday", image: "./image.png" }
+    { 
+      id: '10', 
+      title: "Blinding Lights", 
+      artist: "The Weeknd", 
+      lastPlayed: "2 hours ago", 
+      image: "./image.png", 
+      path: "/audio/10.mp3"
+    },
+    { 
+      id: '11', 
+      title: "As It Was", 
+      artist: "Harry Styles", 
+      lastPlayed: "5 hours ago", 
+      image: "./image.png", 
+      path: "/audio/11.mp3"
+    },
+    { 
+      id: '12', 
+      title: "Anti-Hero", 
+      artist: "Taylor Swift", 
+      lastPlayed: "Yesterday", 
+      image: "./image.png", 
+      path: "/audio/12.mp3"
+    }
   ];
 
   return (
@@ -26,6 +50,7 @@ const RecentPage = () => {
           <motion.div
             key={index}
             className="flex items-center gap-4 p-4 hover:bg-gray-700 rounded-lg transition-colors cursor-pointer"
+            onClick={() => playTrack(track)}
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: index * 0.1, duration: 0.5 }}
@@ -35,7 +60,10 @@ const RecentPage = () => {
               <h3 className="font-semibold text-white">{track.title}</h3>
               <p className="text-gray-400">{track.artist}</p>
             </div>
-            <span className="text-gray-500 text-sm">{track.lastPlayed}</span>
+            <div className="flex items-center gap-2 text-gray-500 text-sm">
+              <Clock size={16} />
+              <span>{track.lastPlayed}</span>
+            </div>
           </motion.div>
         ))}
       </div>

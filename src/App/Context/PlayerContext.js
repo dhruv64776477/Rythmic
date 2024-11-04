@@ -2,17 +2,6 @@ import React, { createContext, useContext, useState, useEffect, useRef } from 'r
 
 const PlayerContext = createContext();
 
-const INITIAL_TRACKS = [
-  {
-    id: 'sample-1',
-    title: 'Sample Track 1',
-    artist: 'Artist 1',
-    path: '/audio/Alarm.mp3',
-    image: '/images/sample1.jpg',
-    duration: 180
-  }
-];
-
 const STORAGE_KEYS = {
   TRACKS: 'player_tracks',
   CURRENT_TRACK: 'player_currentTrack',
@@ -49,10 +38,10 @@ export const PlayerProvider = ({ children }) => {
   const [tracks, setTracks] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.TRACKS);
-      return saved ? JSON.parse(saved) : INITIAL_TRACKS;
+      return saved ? JSON.parse(saved) : [];
     } catch (error) {
       console.error('Error loading tracks from localStorage:', error);
-      return INITIAL_TRACKS;
+      return [];
     }
   });
   
