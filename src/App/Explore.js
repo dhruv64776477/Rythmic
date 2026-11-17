@@ -1,12 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { usePlayer } from './Context/PlayerContext';
+import { fetchAudioCatalog } from '../services/audioApi';
 import '../CSS/Explore.css';
+
+const sampleTopCharts = [
+  { id: '1', position: '01', title: 'Jesus Is King', artist: 'Kanye West', duration: '3:45', image: "./image.png", path: '/audio/13.mp3' },
+  { id: '2', position: '02', title: 'Lean On', artist: 'Major Lazer ft DJ Snake', duration: '3:45', image: "./image.png", path: '/audio/14.mp3' },
+  { id: '3', position: '03', title: 'Havana', artist: 'Camila Cabello', duration: '3:45', image: "./image.png", path: '/audio/15.mp3' },
+  { id: '4', position: '04', title: 'Closer', artist: 'The Chainsmokers', duration: '3:45', image: "./image.png", path: '/audio/1.mp3' }
+];
 
 const Explore = () => {
   const { playTrack } = usePlayer();
+  const [topCharts, setTopCharts] = useState(sampleTopCharts);
+
+  useEffect(() => {
+    let active = true;
+
+    fetchAudioCatalog()
+      .then((tracks) => {
+        if (active && tracks.length > 0) {
+          setTopCharts(tracks);
+        }
+      })
+      .catch((error) => {
+        console.warn("Using sample tracks because the audio API is unavailable:", error.message);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, []);
 
   const topArtists = [
     { name: "Arijit Singh", plays: "100M Plays", image: "./image.png" },
@@ -24,13 +51,6 @@ const Explore = () => {
     { name: 'Hip Pop', color: 'bg-teal-400' },
     { name: 'Classical Period', color: 'bg-pink-400' },
     { name: 'Rap Hip Pop', color: 'bg-purple-400' }
-  ];
-
-  const topCharts = [
-    { id: '1', position: '01', title: 'Jesus Is King', artist: 'Kanye West', duration: '3:45', image: "./image.png", path: '/audio/13.mp3' },
-    { id: '2', position: '02', title: 'Lean On', artist: 'Major Lazer ft DJ Snake', duration: '3:45', image: "./image.png", path: '/audio/14.mp3' },
-    { id: '3', position: '03', title: 'Havana', artist: 'Camila Cabello', duration: '3:45', image: "./image.png", path: '/audio/15.mp3' },
-    { id: '4', position: '04', title: 'Closer', artist: 'The Chainsmokers', duration: '3:45', image: "./image.png", path: '/audio/1.mp3' }
   ];
 
   return (
@@ -136,7 +156,7 @@ const Explore = () => {
                       <p className="chart-artist">{track.artist}</p>
                     </div>
                   </div>
-                  <span className="chart-duration">{track.duration}</span>
+                  <span className="chart-duration">{track.durationLabel || track.duration}</span>
                 </motion.div>
               ))}
             </div>

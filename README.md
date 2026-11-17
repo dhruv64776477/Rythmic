@@ -1,70 +1,90 @@
-# Getting Started with Create React App
+# Rythmic
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Rythmic is a music-player UI built with React. Browse sample music pages and
+play bundled audio in a persistent, draggable player.
 
-## Available Scripts
+> The catalog and most page content are currently demo data. Playback uses
+> audio files in `public/audio`; the React app is not yet connected to the
+> separate Express server in `server/`.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- Explore page with sample charts, artists, and genres.
+- Albums, artists, genres, radio, recently played, favourites, and local-library
+  pages.
+- Audio controls for play/pause, next/previous, seeking, and playback progress.
+- A draggable player that remembers the queue, selected track, volume, and
+  playback state in browser `localStorage`.
+- Responsive styling with Tailwind CSS, animations with Framer Motion, and
+  icons from Lucide.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Some screens are prototypes rather than complete workflows: local-file import
+and playlist creation are not wired up, and favourites/recent items use
+hard-coded sample data.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Run locally
 
-### `npm test`
+### Requirements
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- Node.js and npm
 
-### `npm run build`
+### Start the app
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm install
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Open [http://localhost:3000](http://localhost:3000). The development server
+reloads when source files change.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Available scripts
 
-### `npm run eject`
+| Command | Description |
+| --- | --- |
+| `npm start` | Start the development server |
+| `npm test -- --watchAll=false` | Run the Jest/React Testing Library tests once |
+| `npm run build` | Create an optimized production build in `build/` |
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The current test file is still the Create React App starter test and should be
+updated to cover the Rythmic interface.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Project layout
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```text
+src/
+  App.js                    App shell and page routes
+  App/Component/            Header, sidebar, and audio player
+  App/Context/              Shared playback state and track components
+  App/Pages/                Explore and library pages
+  CSS/                      Page and component styles
+public/
+  audio/                    Bundled sample MP3 files
+  image.png                 Shared sample artwork
+server/                     Separate Express/MongoDB server project
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Adding sample tracks
 
-## Learn More
+Place audio files in `public/audio/` and reference them with a URL such as
+`/audio/1.mp3`. Track objects used by the player should include:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```js
+{
+  id: "unique-track-id",
+  title: "Track title",
+  artist: "Artist name",
+  path: "/audio/1.mp3",
+  image: "/image.png",
+  duration: 180
+}
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Backend
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The `server/` directory contains a separate Express/MongoDB application with
+account, audio-catalog, and playlist APIs. The Explore page loads published
+audio from the server when available and falls back to sample tracks if it is
+offline. Set `REACT_APP_API_URL` to change the API origin; it defaults to
+`http://localhost:8000`. See
+[`server/Readme.md`](server/Readme.md) for its setup notes.
